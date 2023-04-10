@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台配置</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+<div id="box">
+    <label>轮播图配置：</label><br/>
+    <label>
+        请输入表名：
+        <input v-model="this.carousel.table">
+        <br/>
+        请输入关键字：
+        <input v-model="carousel.keyword">
+        <br/>
+        请选择一张图片：
+        <input v-model="carousel.url">
+        <br/>
+        <input type="button" @click="carouselConfig()" value="轮播图配置">
+    </label>
+</div>
+<script type="text/javascript">
+
+    window.onload=function(){
+        let vm=new Vue({
+            el: '#config',
+            data:{
+                carousel:
+                    {
+                        resourceId:"",
+                        table:"safdas",
+                        keyword:"",
+                        url:""
+                    }
+            },
+            methods:{
+                carouselConfig:function (){
+                    let param=[]
+                    param[0]=this.carousel;
+                    let url='http://localhost:4010/widgets/config/carouseItem/366773660297465856';
+                    this.$http.post(url,param).then(function (res) {
+                        if(res===true){
+                            window.alert('配置成功');
+                        }else{
+                            window.alert("配置失败")
+                        }
+                    })
+                }
+
+            }
+        })
+    }
+</script>
+</body>
+</html>

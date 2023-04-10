@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create.table" author="xing">
+        <createTable tableName="analysis_detail" remarks="分析详情表">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="menu_id" type="bigint" remarks="目录id"/>
+            <column name="type" type="int" remarks="图表类型"/>
+            <column name="css" type="text" remarks="css展示样式"/>
+            <column name="config" type="text" remarks="图表标题及X轴Y轴内容配置"/>
+            <column name="search_type" type="int" remarks="分析类型:0-MySQL,1-ClickHouse"/>
+            <column name="info" type="text" remarks="分析说明文字"/>
+            <column name="execute_sql" type="text" remarks="分析sql"/>
+            <column name="algorithm_url" type="varchar(256)" remarks="算法分析请求地址"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

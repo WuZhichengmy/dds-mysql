@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--$不会加引号，#会-->
+<mapper namespace="com.xmu.modules.display_config.mapper.DisplayWidgetsMapper">
+
+
+    <select id="selectDataByTableName" resultType="java.util.Map" parameterType="java.lang.String">
+        select * from #{tableName}
+    </select>
+
+    <select id="selectDataBySql" resultType="java.util.Map" parameterType="java.lang.String">
+        ${Sql}
+    </select>
+
+    <select id="listDataBySql" resultType="java.util.Map" parameterType="java.lang.String">
+        ${Sql}
+    </select>
+
+    <select id="selectByPage" resultType="java.util.Map">
+        ${sql}
+    </select>
+
+    <select id="listLeaderBoardData" resultType="java.util.Map">
+        SELECT id, ${defaultProperty} as title
+        FROM ${tableName}
+        WHERE
+        ${defaultProperty} is not null and ${defaultProperty} != ''
+        and ${orderColumn} is not null and ${orderColumn} != ''
+        ORDER BY
+        ${orderColumn}
+        ${orderType}
+        LIMIT #{limit}
+    </select>
+
+    <select id="listLatestData" resultType="java.util.Map">
+        SELECT id, ${defaultProperty} as title
+        FROM ${tableName}
+        WHERE
+        ${defaultProperty} is not null and ${defaultProperty} != ''
+        <foreach item="item" collection="orderColumns" separator="and">
+            and ${item} is not null and ${item} != ''
+        </foreach>
+        ORDER BY
+        <foreach item="item" collection="orderColumns" separator=",">
+            ${item}
+        </foreach>
+        DESC LIMIT #{limit}
+    </select>
+
+</mapper>

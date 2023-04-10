@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create.table" author="xing">
+        <createTable tableName="rule_set" remarks="导入规则表">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="project_id" type="bigint" remarks="项目表id"/>
+            <column name="resource_id" type="bigint" remarks="资源表id"/>
+            <column name="name" type="varchar(64)" remarks="规则名称"/>
+            <column name="description" type="varchar(1024)" remarks="规则描述"/>
+            <column name="create_user" type="varchar(64)" remarks="创建用户"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="modify_user" type="varchar(64)" remarks="编辑用户"/>
+            <column name="modify_time" type="datetime" remarks="编辑时间"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

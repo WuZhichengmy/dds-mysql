@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>data-display-server</artifactId>
+        <groupId>com.xmu</groupId>
+        <version>2.6</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>dds-core</artifactId>
+    <name>业务模块</name>
+    <properties>
+        <spring-data-elasticsearch.version>3.2.7.RELEASE</spring-data-elasticsearch.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xmu</groupId>
+            <artifactId>dds-tools</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!-- 对象复制 -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils.version}</version>
+        </dependency>
+
+        <!-- EasyExcel -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create.table" author="xing">
+        <createTable tableName="search_result_statistics" remarks="检索结果统计表">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="project_id" type="bigint" remarks="项目表id"/>
+            <column name="resource_id" type="bigint" remarks="资源表id"/>
+            <column name="title" type="varchar(512)" remarks="统计标题,精炼标题"/>
+            <column name="field" type="varchar(128)" remarks="统计字段"/>
+            <column name="size" type="int" remarks="统计结果数"/>
+            <column name="type" type="int" remarks="检索配置类型: 0-ES全文检索 1-智能检索(算法)"/>
+            <column name="create_user" type="varchar(64)" remarks="创建用户"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="modify_user" type="varchar(64)" remarks="编辑用户"/>
+            <column name="modify_time" type="datetime" remarks="编辑时间"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,13 @@
+#single模式
+canal:
+  host: 192.144.217.83
+  port: 11111
+  example: example
+  #此处为tencentYun
+
+mysql:
+  username: root
+  password: 123456
+
+schedule:
+  batchSize: 1000

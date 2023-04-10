@@ -1,0 +1,11 @@
+package com.xmu.modules.display_config.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.xmu.modules.display_config.domain.AnalysisDetail;
+
+/**
+ * @author Xing
+ */
+public interface AnalysisDetailService extends IService<AnalysisDetail> {
+
+}

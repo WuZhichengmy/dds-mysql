@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--$不会加引号，#会-->
+<mapper namespace="com.xmu.modules.display_config.mapper.ResourceMapper">
+
+    <select id="countResourceData" resultType="java.lang.Integer">
+        select count(*) from ${tableName}
+        <where>
+            <if test="enumerationKey != null and enumerationKey != ''">
+                ${enumerationKey} = #{enumerationValue}
+            </if>
+        </where>
+    </select>
+
+    <update id="createResourceProperty" parameterType="map">
+        ALTER TABLE ${tableName}
+        ADD (`${property}`
+        <choose>
+            <when test="type == 0">
+                varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL
+            </when>
+            <when test="type == 1">
+                int DEFAULT NULL
+            </when>
+            <when test="type == 2">
+                bigint DEFAULT NULL
+            </when>
+            <when test="type == 3">
+                decimal(9,2) DEFAULT NULL
+            </when>
+            <when test="type == 4">
+                datetime DEFAULT NULL
+            </when>
+            <when test="type == 5">
+                text DEFAULT NULL
+            </when>
+            <when test="type == 6">
+                longtext DEFAULT NULL
+            </when>
+        </choose>
+        )
+    </update>
+
+    <update id="updateResourceProperty" parameterType="map">
+        ALTER TABLE ${tableName}
+        CHANGE `${oldProperty}` `${newProperty}`
+        <choose>
+            <when test="type == 0">
+                varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL
+            </when>
+            <when test="type == 1">
+                int DEFAULT NULL
+            </when>
+            <when test="type == 2">
+                bigint DEFAULT NULL
+            </when>
+            <when test="type == 3">
+                decimal(9,2) DEFAULT NULL
+            </when>
+            <when test="type == 4">
+                datetime DEFAULT NULL
+            </when>
+            <when test="type == 5">
+                text DEFAULT NULL
+            </when>
+            <when test="type == 6">
+                longtext DEFAULT NULL
+            </when>
+        </choose>
+    </update>
+
+    <update id="deleteResourceProperty">
+        ALTER TABLE ${tableName} DROP COLUMN `${property}`
+    </update>
+
+    <insert id="saveImportData">
+        insert into ${tableName} (
+        <foreach collection="importData" index="key" item="value" open="" close="" separator=",">
+            `${key}`
+        </foreach>)
+        values (
+        <foreach collection="importData" index="key" item="value" open="" close="" separator=",">
+            #{value}
+        </foreach>)
+        on duplicate key update
+        <foreach collection="importData" index="key" item="value" open="" close="" separator=",">
+            <if test="key != 'id' and key != 'create_time'">
+                `${key}` = #{value}
+            </if>
+        </foreach>
+    </insert>
+
+    <update id="creatTable" parameterType="java.lang.String">
+        CREATE TABLE `${tableName}`  (id bigint primary key)
+    </update>
+
+    <update id="dropTable" parameterType="java.lang.String">
+        DROP  TABLE  ${tableName}
+    </update>
+
+    <select id="getEsStatisticsResults" resultType="com.xmu.modules.display_config.response.ESStatisticsResultDTO">
+        select `${field}` as `key`, count( id ) as `value`
+        from ${tableName} ${ew.customSqlSegment}
+    </select>
+
+    <select id="getFieldStatistic" resultType="java.lang.String">
+        select `${field}`
+        from ${tableName}
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="listTargetResourceByIds" resultType="com.alibaba.fastjson.JSONObject">
+        select * from ${tableName}
+        <where>
+            <if test="ids != null and ids.size()>0">
+                id in
+                <foreach item="item" collection="ids" open="(" separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="listDataBySql" resultType="java.util.Map" parameterType="java.lang.String">
+        ${sql}
+    </select>
+
+    <update id="updateTableName" parameterType="java.lang.String">
+        ALTER TABLE `${oldName}` RENAME TO `${newName}`
+    </update>
+
+</mapper>

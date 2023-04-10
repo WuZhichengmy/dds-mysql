@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <preConditions>
+        <dbms type="mysql"/>
+    </preConditions>
+
+    <include file="classpath:config/data_display/change_log/rel0/project.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/resource.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/display_widgets.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/search_config.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/search_fields_config.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/search_result_statistics.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/search_result_analysis.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/detail_fields.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/search_log.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/detail_log.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/analysis_detail.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/analysis_menu.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/import_property.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/import_task.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/resource_property.xml"/>
+    <include file="classpath:config/data_display/change_log/rel0/rule_set.xml"/>
+
+</databaseChangeLog>
