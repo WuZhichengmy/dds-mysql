@@ -21,6 +21,7 @@ import com.xmu.modules.display_config.response.AnalysisWidgetDTO;
 import com.xmu.modules.display_config.response.Component;
 import com.xmu.modules.display_config.response.chart.*;
 import com.xmu.modules.display_config.service.*;
+import com.xmu.modules.display_config.utils.MultiPartDatasetBuilder;
 import com.xmu.modules.display_config.utils.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -236,8 +237,21 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
     private Object multiPartFormat(List<Map<String, Object>> queryResult, String config) {
         Map<String, MultiPartConfig> configMap = JSONObject.parseObject(config, new TypeReference<Map<String, MultiPartConfig>>() {
         });
-
-        return null;
+        MultiPartConfig mpConfig = configMap.get("multiPartConfig");
+        String xName = mpConfig.getXName();
+        String yName = mpConfig.getYName();
+        String dataDesc = mpConfig.getDataDesc();
+        String isLine = mpConfig.getIsLine();
+        String stackGroup = mpConfig.getStackGroup();
+        String cName = mpConfig.getComponentName();
+        MultiPartDatasetBuilder datasetBuilder = new MultiPartDatasetBuilder(xName, yName, queryResult);
+        datasetBuilder.build();
+        return new MultiPartDTO().setTitle(cName)
+                .setDataset(datasetBuilder.getDataset())
+                .setSeries(datasetBuilder.getSeries(
+                        isLine.trim().isEmpty()
+                                ? MultiPartDatasetBuilder.DataType.LINE : MultiPartDatasetBuilder.DataType.BAR,
+                        !stackGroup.trim().isEmpty()));
     }
 
     private Object tagsCloudFormat(List<Map<String, Object>> queryResult, String config) {

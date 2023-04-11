@@ -10,9 +10,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class MultiPartConfig {
-    private String header;
-    private String headerName;
+    private String xName;
+    private String yName;
     private String dataDesc;
+    private String isLine;
+    private String stackGroup;
     private String componentName;
 
 }

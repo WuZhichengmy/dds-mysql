@@ -3,15 +3,14 @@ package com.xmu.modules.display_config.response.chart;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Accessors(chain = true)
 public class MultiPartDTO {
     private String title="多成分图";
@@ -27,5 +26,15 @@ public class MultiPartDTO {
     @JsonProperty(value = "dataset")
     private Map<String, Object> dataset;
     //{type:'value',name:'发表量'}
+    @JsonProperty(value = "xAxis")
+    private Map<String, Object> xAxis;
+    @JsonProperty(value = "yAxis")
+    private Map<String, Object> yAxis;
     private List<Map<String,Object>> series;
+
+
+    public MultiPartDTO() {
+        xAxis = new HashMap<String, Object>(){{put("type", "category");}};
+        yAxis = new HashMap<>();
+    }
 }
