@@ -37,7 +37,7 @@
 2. 运行DbServiceApplication模块，等待数据库填充。
 3. 出现并包含不限于如下数据库表，证明数据库填充成功。
 
-​		![image-20230410135647104](static\image-20230410135647104.png)
+​		![image-20230410135647104](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/)image-20230410135647104.png)
 
 
 
@@ -47,15 +47,15 @@
 
 1. 启动dds-admin管理系统，使用开发模式进行试运行，即package.json中的dev选项。
 2. 新建项目。
-​		![image-20230410140829894](static\image-20230410140829894.png)
+​		![image-20230410140829894](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410140829894.png)
 
 3. 新建完成后查看数据库中的项目项。
 
-​		![image-20230410141053835](static\image-20230410141053835.png)
+​		![image-20230410141053835](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410141053835.png)
 
 4. 复制项目id覆盖至dds-web\src\settings.js中的PROJECT_ID。
 
-​		![image-20230410141309703](static\image-20230410141309703.png)
+​		![image-20230410141309703](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410141309703.png)
 
 ***	此系统由于管理系统在设计之初是考虑到同时兼顾和管理多个展示系统，因此对于每个展示系统而言，分配一个独有的project_id以示该展示系统独属于某个展示系统。***
 
@@ -72,14 +72,14 @@
 
 1. 在dds-core模块的domain目录下仿写创建“*YourEntity*”实体（其中*YourEntity*即为你在前端输入的**实体名**）。
 
-​		![image-20230410144350179](static\image-20230410144350179.png)
+​		![image-20230410144350179](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410144350179.png)
 
 2. 在dds-core模块的mapper目录下仿写创建“*YourTableName*Mapper”接口（其中*YourTableName*即为你在前端输入的**实际表名**），其中泛型项填上刚才创建的**实体**。
 
-​		![image-20230410144122321](static\image-20230410144122321.png)
+​		![image-20230410144122321](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410144122321.png)
 
 
-				**(2023年4月11日泛型更新已解决)**
+**(2023年4月11日泛型更新已解决)**
 
 3. ~~改动dds-core模块下的service\SearchService.java，在继承类泛型中改成**实体**。~~
 
@@ -94,7 +94,7 @@
 ​	~~*如果有想法的话，可以对这种现状加以改造，使得系统回归到一对多的设计初衷上。*~~
 
 3. 改写添加用于新建展示系统的SearchService（位于dds-core模块的impl目录），注意泛型类型的一致性要求，即对 “class extends ServiceImpl< A, B > implements SearchService< B >” 语句而言，A要求是B的Spring JPA Mapper，B保持一致。
-​		![image-20230411140308583](C:\Users\dell\AppData\Roaming\Typora\typora-user-images\image-20230411140308583.png)
+​		![image-20230411140308583](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230411140308583.png)
 
 4. 重启后端。
 	
