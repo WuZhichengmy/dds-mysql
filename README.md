@@ -37,7 +37,7 @@
 2. 运行DbServiceApplication模块，等待数据库填充。
 3. 出现并包含不限于如下数据库表，证明数据库填充成功。
 
-​		![image-20230410135647104](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/)image-20230410135647104.png)
+​		![image-20230410135647104](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410135647104.png)
 
 
 
