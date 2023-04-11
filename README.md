@@ -1,86 +1,109 @@
-<h1 style="text-align: center">EL-ADMIN 后台管理系统</h1>
-<div style="text-align: center">
+# 系统配置部署说明
 
-[![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/elunez/eladmin/blob/master/LICENSE)
-[![star](https://gitee.com/elunez/eladmin/badge/star.svg?theme=white)](https://gitee.com/elunez/eladmin)
-[![GitHub stars](https://img.shields.io/github/stars/elunez/eladmin.svg?style=social&label=Stars)](https://github.com/elunez/eladmin)
-[![GitHub forks](https://img.shields.io/github/forks/elunez/eladmin.svg?style=social&label=Fork)](https://github.com/elunez/eladmin)
+## 简介
 
-</div>
+*由于原工程缺少介绍说明文件，特此撰写文档方便后续使用开发。*
 
-#### 项目简介
-一个基于 Spring Boot 2.1.0 、 Spring Boot Jpa、 JWT、Spring Security、Redis、Vue的前后端分离的后台管理系统
+此系统包括前两个前端子系统：管理系统（dds-admin）、展示系统（dds-web）以及一个总的后端子系统（data-display-server），两个前端系统依赖于同一个后端系统也即依赖于同一个数据库（库名：data_display）。
 
-**开发文档：**  [https://el-admin.vip](https://el-admin.vip)
+**作为系统管理者：**
 
-**体验地址：**  [https://el-admin.xin](https://el-admin.xin)
+系统特有的职能包括展示系统样式配置，可视化动态配置（分析报告配置）
 
-**账号密码：** `admin / 123456`
+**作为一般用户：**
 
-#### 项目源码
+系统功能包括：首页浏览，检索，数据精炼，数据导出，结果分析，分析报告等
 
-|     |   后端源码  |   前端源码  |
-|---  |--- | --- |
-|  github   |  https://github.com/elunez/eladmin   |  https://github.com/elunez/eladmin-web   |
-|  码云   |  https://gitee.com/elunez/eladmin   |  https://gitee.com/elunez/eladmin-web   |
+**权限说明**
 
-#### 主要特性
-- 使用最新技术栈，社区资源丰富。
-- 高效率开发，代码生成器可一键生成前后端代码
-- 支持数据字典，可方便地对一些状态进行管理
-- 支持接口限流，避免恶意请求导致服务层压力过大
-- 支持接口级别的功能权限与数据权限，可自定义操作
-- 自定义权限注解与匿名接口注解，可快速对接口拦截与放行
-- 对一些常用地前端组件封装：表格数据请求、数据字典等
-- 前后端统一异常拦截处理，统一输出异常，避免繁琐的判断
-- 支持在线用户管理与服务器性能监控，支持限制单用户登录
-- 支持运维管理，可方便地对远程服务器的应用进行部署与管理
+系统包含最基本的权限功能，用户名默认为admin，密码为123456
 
-####  系统功能
-- 用户管理：提供用户的相关配置，新增用户后，默认密码为123456
-- 角色管理：对权限与菜单进行分配，可根据部门设置角色的数据权限
-- 菜单管理：已实现菜单动态路由，后端可配置化，支持多级菜单
-- 部门管理：可配置系统组织架构，树形表格展示
-- 岗位管理：配置各个部门的职位
-- 字典管理：可维护常用一些固定的数据，如：状态，性别等
-- 系统日志：记录用户操作日志与异常日志，方便开发人员定位排错
-- SQL监控：采用druid 监控数据库访问性能，默认用户名admin，密码123456
-- 定时任务：整合Quartz做定时任务，加入任务日志，任务运行情况一目了然
-- 代码生成：高灵活度生成前后端代码，减少大量重复的工作任务
-- 邮件工具：配合富文本，发送html格式的邮件
-- 七牛云存储：可同步七牛云存储的数据到系统，无需登录七牛云直接操作云数据
-- 支付宝支付：整合了支付宝支付并且提供了测试账号，可自行测试
-- 服务监控：监控服务器的负载情况
-- 运维管理：一键部署你的应用
+## 部署配置流程
 
-#### 项目结构
-项目采用按功能分模块的开发方式，结构如下
+### 下载依赖
 
-- `eladmin-common` 为系统的公共模块，各种工具类，公共配置存在该模块
+前端通过node获取依赖，后端使用maven将所需的依赖install下来，注意软件的版本问题（例如JDK此系统使用的是**1.8**）。
 
-- `eladmin-system` 为系统核心模块也是项目入口模块，也是最终需要打包部署的模块
+### 创建数据库
 
-- `eladmin-logging` 为系统的日志模块，其他模块如果需要记录日志需要引入该模块
+*系统默认采用的是MySQL数据库，同样适用于所有liquibase支持的数据库。*
 
-- `eladmin-tools` 为第三方工具模块，包含：图床、邮件、云存储、本地存储、支付宝
+在您采用的数据库上创建空数据库，名称与配置文件保持一致，默认名即data_display。
 
-- `eladmin-generator` 为系统的代码生成模块，代码生成的模板在 system 模块中
+### 填充数据库
 
-#### 详细结构
+1. 在data-display-server\dds-db\src\main\resources\application.yml中修改datasource以及liquibase等配置信息，以使系统能够通过liquibase配置文件自动填充数据库。
 
-```
-- eladmin-common 公共模块
-    - annotation 为系统自定义注解
-    - aspect 自定义注解的切面
-    - base 提供了Entity、DTO基类和mapstruct的通用mapper
-    - config 自定义权限实现、redis配置、swagger配置、Rsa配置等
-    - exception 项目统一异常的处理
-    - utils 系统通用工具类
-- eladmin-system 系统核心模块（系统启动入口）
-	- config 配置跨域与静态资源，与数据权限
-	    - thread 线程池相关
-	- modules 系统相关模块(登录授权、系统监控、定时任务、运维管理等)
-- eladmin-logging 系统日志模块
-- eladmin-tools 系统第三方工具模块
-- eladmin-generator 系统代码生成模块
-```
+2. 运行DbServiceApplication模块，等待数据库填充。
+3. 出现并包含不限于如下数据库表，证明数据库填充成功。
+
+​		![image-20230410135647104](static\image-20230410135647104.png)
+
+
+
+4. 数据库填充完成后，启动DataDisplayServerApplication，这是后端系统的总入口，若要对系统进行进一步配置，详见data-display-server\dds-system\src\main\resources\config下的文件。
+
+### 运行前端
+
+1. 启动dds-admin管理系统，使用开发模式进行试运行，即package.json中的dev选项。
+2. 新建项目。
+​		![image-20230410140829894](static\image-20230410140829894.png)
+
+3. 新建完成后查看数据库中的项目项。
+
+​		![image-20230410141053835](static\image-20230410141053835.png)
+
+4. 复制项目id覆盖至dds-web\src\settings.js中的PROJECT_ID。
+
+​		![image-20230410141309703](static\image-20230410141309703.png)
+
+***	此系统由于管理系统在设计之初是考虑到同时兼顾和管理多个展示系统，因此对于每个展示系统而言，分配一个独有的project_id以示该展示系统独属于某个展示系统。***
+
+5. 根据页面提示，创建资源并导入资源，其中**表名**对应于后端数据库中的**实际表名**，**实体**对应**实体名**（按照Java规范，首字母最好大写）。
+
+   *听说资源的导入有编码条件的限制，我暂时没遇到过，如果导入失败，则可考虑切换导入文件编码。*
+
+   1. 首先创建属性列表，将表格属性手动导入到列表中。
+   2. 其次创建规则集，规则集就是相当于对导入文件做了一步映射，如果没有映射的想法，直接在映射关系项进行等值映射即可。
+   3. 导入资源，选择定义好的规则集进行映射。
+   4. 观察到后端数据库表格导入进输入数据，证明导入成功，同时观察数据库是否存在以创建资源时输入的**实际表名**为名的表，因为此表即是导入数据的存放处，后续的步骤会基于此表展开。
+
+### 更新后端
+
+1. 在dds-core模块的domain目录下仿写创建“*YourEntity*”实体（其中*YourEntity*即为你在前端输入的**实体名**）。
+
+​		![image-20230410144350179](static\image-20230410144350179.png)
+
+2. 在dds-core模块的mapper目录下仿写创建“*YourTableName*Mapper”接口（其中*YourTableName*即为你在前端输入的**实际表名**），其中泛型项填上刚才创建的**实体**。
+
+​		![image-20230410144122321](static\image-20230410144122321.png)
+
+
+				**(2023年4月11日泛型更新已解决)**
+
+3. ~~改动dds-core模块下的service\SearchService.java，在继承类泛型中改成**实体**。~~
+
+4. ~~同样将Mapper和实体改写到SearchServiceImpl的泛型中（位于dds-core下的service\impl）~~			
+
+5. ~~最后将SearchService注入到ServiceConfig（位于dds-core下的config）中，并把它put到serviceMap中。~~
+
+​	~~*第3-5步令人感到匪夷所思，实际上，这种做法破坏了原系统的拓展性，使得SearchService变得只为Test一张表服务，同时第5步直接从代码层面将Service加入到一个map中，也是一种急功近利的做法。*~~
+
+​	~~*对于原项目而言，applicationContext中不知为何获取不到实现SearchService接口的SpringBean，因此这种做法是一种捷径，对于大多数项目需求而言，一管理系统对应一展示系统的关系即可满足要求（一般来说企业的项目也不希望他的管理系统是和别人共用的）。*~~
+
+​	~~*如果有想法的话，可以对这种现状加以改造，使得系统回归到一对多的设计初衷上。*~~
+
+3. 改写添加用于新建展示系统的SearchService（位于dds-core模块的impl目录），注意泛型类型的一致性要求，即对 “class extends ServiceImpl< A, B > implements SearchService< B >” 语句而言，A要求是B的Spring JPA Mapper，B保持一致。
+​		![image-20230411140308583](C:\Users\dell\AppData\Roaming\Typora\typora-user-images\image-20230411140308583.png)
+
+4. 重启后端。
+	
+### 启动展示
+
+可以启动dds-web查看你自定义配置的结果。它包含简介中提到的功能。
+
+## 尾言
+
+此项目仍旧处于开发阶段，部分功能还未完善。
+
+目前缺失或者不明确的功能点包括但不限于：分析报告中的多成分图、关系图实现，分析报告导出功能。

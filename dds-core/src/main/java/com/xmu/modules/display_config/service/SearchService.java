@@ -2,7 +2,7 @@ package com.xmu.modules.display_config.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xmu.modules.display_config.domain.Test;
+import com.xmu.model.IdEntity;
 import com.xmu.modules.display_config.request.AdvancedSearchResourceDTO;
 import com.xmu.modules.display_config.request.AdvancedStatisticsDTO;
 import com.xmu.modules.display_config.response.ESStatisticsResultDTO;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Xing
  */
-public interface SearchService extends IService<Test> {
+public interface SearchService<A extends IdEntity> extends IService<A> {
 
     /**
      * 构建检索构造器

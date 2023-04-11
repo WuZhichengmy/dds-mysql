@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.xmu.exception.BadRequestException;
 import com.xmu.exception.EntityNotFoundException;
+import com.xmu.model.IdEntity;
 import com.xmu.modules.display_config.config.ServiceConfig;
 import com.xmu.modules.display_config.domain.*;
 import com.xmu.modules.display_config.enums.SearchTypeEnum;
@@ -140,7 +141,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         List<SearchFieldsConfig> searchFieldsConfigList = searchFieldsConfigService.list(Wrappers.<SearchFieldsConfig>lambdaQuery()
                 .eq(SearchFieldsConfig::getResourceId, advancedSearchResource.getResourceId()));
         List<String> fields = searchFieldsConfigList.stream().map(SearchFieldsConfig::getName).collect(Collectors.toList());
-        SearchService searchService = serviceConfig.getService(resource.getEntity());
+        SearchService<IdEntity> searchService = serviceConfig.getService(resource.getEntity());
         // 检索
         QueryWrapper wrapper = searchService.handlerWrapper(advancedSearchResource, resource.getTarget(), fields);
         SearchResultDTO searchResultDTO = new SearchResultDTO();

@@ -91,7 +91,7 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
         AdvancedSearchResourceDTO advancedSearchResource = new AdvancedSearchResourceDTO();
         BeanUtils.copyProperties(searchInfo, advancedSearchResource);
         advancedSearchResource.setResourceId(resource.getId());
-        SearchService searchService = serviceConfig.getService(resource.getEntity());
+        SearchService<IdEntity> searchService = serviceConfig.getService(resource.getEntity());
         QueryWrapper wrapper = searchService.handlerWrapper(advancedSearchResource, resource.getTarget(), Lists.newArrayList(Constants.PRIMARY_KEY));
         List<IdEntity> list = searchService.list(wrapper);
         // 检索结果为空

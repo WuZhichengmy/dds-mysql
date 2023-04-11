@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.xmu.model.IdEntity;
 import com.xmu.modules.display_config.domain.Test;
 import com.xmu.modules.display_config.enums.LogicEnum;
 import com.xmu.modules.display_config.enums.OrderEnum;
@@ -24,10 +25,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author Xing
+ * @author Xing, dengsijian
+ *
+ * 需要改写和覆盖的文件，一个Impl对于一个实体类对应一个数据库表以及一个资源的检索集合
+ * 实现方式：
+ * *Impl extends ServiceImpl<*Mapper, *> implements SearchService<*> {...}
  */
 @Service
-public class SearchServiceImpl extends ServiceImpl<TestMapper, Test> implements SearchService {
+public class SearchServiceImpl extends ServiceImpl<TestMapper, Test> implements SearchService<Test> {
 
     @Autowired
     protected ResourceService resourceService;

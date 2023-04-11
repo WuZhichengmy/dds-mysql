@@ -1,6 +1,8 @@
 package com.xmu.modules.display_config.config;
 
 import com.xmu.exception.BadRequestException;
+import com.xmu.model.IdEntity;
+import com.xmu.modules.display_config.domain.Test;
 import com.xmu.modules.display_config.service.SearchService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,10 @@ import java.util.Map;
 @Service
 public class ServiceConfig implements InitializingBean {
 
-    private static Map<String, SearchService> serviceMap = new HashMap<>();
+    private static Map<String, SearchService<? extends IdEntity>> serviceMap = new HashMap<>();
     @Autowired
     private ApplicationContext applicationContext;
-    @Autowired
-    private SearchService searchService;
-    public SearchService getService(String key) {
+    public SearchService<IdEntity> getService(String key) {
         SearchService iService = serviceMap.get(key);
         if (null == iService) {
             throw new BadRequestException("检索异常,请检查配置");
@@ -38,8 +38,6 @@ public class ServiceConfig implements InitializingBean {
         beanMap.values().forEach(iService ->
                 serviceMap.put(iService.getEntityClass().getSimpleName(), iService)
         );
-        // TODO BeanMap
-        serviceMap.put("test", searchService);
     }
 
 }

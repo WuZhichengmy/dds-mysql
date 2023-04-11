@@ -32,3 +32,4 @@ HELP.md
 dds-system/src/main/resources/config/application-dev.yml
 
 
+*/target/
