@@ -7,7 +7,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class MultiPartDatasetBuilder {
+public class MultiPartDatasetBuilder implements Builder {
 
     public enum DataType {
         LINE, BAR
@@ -17,7 +17,7 @@ public class MultiPartDatasetBuilder {
     // 作为y轴出现的维度名
     private String y;
 
-    // 对于data而言，sql执行的结果必须要求是一个包含x，y的三元组
+    // 对于data而言，sql执行的结果要求至少是一个包含x，y的三元组
     private List<Map<String, Object>> data;
     private List<String> dimensions;
     private List<Map<String, Object>> source;
@@ -36,6 +36,7 @@ public class MultiPartDatasetBuilder {
         this.data = data;
     }
 
+    @Override
     public void build() {
         if (this.x == null || this.x.isEmpty()
                 || this.y == null || this.y.isEmpty()

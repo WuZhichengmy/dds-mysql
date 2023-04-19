@@ -1,5 +1,7 @@
 package com.xmu.modules.display_config.service.impl;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.lang.Tuple;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,6 +23,7 @@ import com.xmu.modules.display_config.response.AnalysisWidgetDTO;
 import com.xmu.modules.display_config.response.Component;
 import com.xmu.modules.display_config.response.chart.*;
 import com.xmu.modules.display_config.service.*;
+import com.xmu.modules.display_config.utils.GraphBuilder;
 import com.xmu.modules.display_config.utils.MultiPartDatasetBuilder;
 import com.xmu.modules.display_config.utils.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -201,7 +204,7 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
         if (ChartTypeEnum.PIE_CHART.getType().equals(type)) {
             return pieFormat(queryResult, config);
         }
-        //TODO: 关系图
+        // 关系图
         if (ChartTypeEnum.RELATION_CHART.getType().equals(type)) {
             return graphFormat(queryResult, config);
         }
@@ -240,7 +243,6 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
         MultiPartConfig mpConfig = configMap.get("multiPartConfig");
         String xName = mpConfig.getXName();
         String yName = mpConfig.getYName();
-        String dataDesc = mpConfig.getDataDesc();
         String isLine = mpConfig.getIsLine();
         String stackGroup = mpConfig.getStackGroup();
         String cName = mpConfig.getComponentName();
@@ -252,6 +254,20 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
                         isLine.trim().isEmpty()
                                 ? MultiPartDatasetBuilder.DataType.LINE : MultiPartDatasetBuilder.DataType.BAR,
                         !stackGroup.trim().isEmpty()));
+    }
+
+    private Object graphFormat(List<Map<String, Object>> queryResult, String config) {
+        Map<String, GraphConfig> configMap = JSONObject.parseObject(config, new TypeReference<Map<String, GraphConfig>>() {
+        });
+        GraphConfig graphConfig = configMap.get("graphConfig");
+        GraphBuilder graphBuilder = new GraphBuilder(queryResult, graphConfig);
+        graphBuilder.build();
+        Map<String, Object> series = new HashMap<>();
+        series.put("categories", graphBuilder.getCategories());
+        series.put("links", graphBuilder.getLinks());
+        series.put("data", graphBuilder.getData());
+        return new GraphRetDTO().setTitle(graphConfig.getComponentName())
+                .setSeries(series);
     }
 
     private Object tagsCloudFormat(List<Map<String, Object>> queryResult, String config) {
@@ -436,10 +452,6 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
                 .setArr(arr).setTitle(bubbleConfig.getComponentName())
                 .setXAxis(xAxis)
                 .setYAxis(yAxis);
-    }
-
-    private Object graphFormat(List<Map<String, Object>> queryResult, String config) {
-        return null;
     }
 
     /**

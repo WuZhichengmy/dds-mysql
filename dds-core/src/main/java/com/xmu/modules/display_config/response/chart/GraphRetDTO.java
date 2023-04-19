@@ -18,8 +18,6 @@ import java.util.Map;
 @Accessors(chain = true)
 public class GraphRetDTO {
     private String title;
-    //[{name:'杨跃进(24)',value:24}]
-    private List<Map<String,Object>> data;
-    //{source:'杨跃进(24)',target:'徐波(11)',value:'10'}
-    private List<Map<String,Object>> links;
+    // 因为数据项是在series中的，因此使用series来包含categories，links，data以便于echarts使用mixin
+    private Map<String, Object> series;
 }
