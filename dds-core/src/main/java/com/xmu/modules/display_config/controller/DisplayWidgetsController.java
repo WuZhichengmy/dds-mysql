@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/widgets")
-@Api(tags = "展示组件配置")
+@Api(tags = "组件展示模块")
 public class DisplayWidgetsController {
 
     @Autowired

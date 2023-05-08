@@ -152,6 +152,12 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         Page page = (Page) searchService.page(new Page<>(advancedSearchResource.getPageNo(), advancedSearchResource.getPageSize()), wrapper);
         searchResultDTO.setSearchResults(page.getRecords(), page.getTotal());
         // 精炼字段
+        SearchResultDTO refineResultDTO = getRefineResultDTO(advancedSearchResource, resource, searchService, searchResultDTO);
+        if (refineResultDTO != null) return refineResultDTO;
+        return searchResultDTO;
+    }
+
+    private SearchResultDTO getRefineResultDTO(AdvancedSearchResourceDTO advancedSearchResource, Resource resource, SearchService<IdEntity> searchService, SearchResultDTO searchResultDTO) {
         List<SearchResultStatistics> searchResultStatistics = searchResultStatisticsService.list(Wrappers.<SearchResultStatistics>lambdaQuery()
                 .eq(SearchResultStatistics::getResourceId, advancedSearchResource.getResourceId()));
         if (CollectionUtils.isEmpty(searchResultStatistics)) {
@@ -166,7 +172,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
             refineResults.add(new RefineResultDTO(statistics.getTitle(), statistics.getField(), esStatisticsResults));
         });
         searchResultDTO.setRefineResults(refineResults);
-        return searchResultDTO;
+        return null;
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/Project")
-@Api(tags = "项目信息配置")
+@Api(tags = "项目模块")
 public class ProjectController {
 
     @Autowired

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xmu.modules.display_config.domain.Resource;
 import com.xmu.modules.display_config.request.*;
 import com.xmu.modules.display_config.response.*;
-import com.xmu.modules.display_config.service.ResourceService;
+import com.xmu.modules.display_config.service.*;
 import com.xmu.modules.display_config.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,20 +22,19 @@ import java.util.List;
  * @author Xing
  */
 @RestController
-@RequestMapping("/resource")
-@Api(tags = "项目数据配置")
+@Api(tags = "资源管理模块")
 public class ResourceController {
 
     @Autowired
     private ResourceService resourceService;
 
-    @PostMapping("/page")
+    @PostMapping("/resource/page")
     public Object page(@RequestBody PageDTO page) {
         return new ResponseEntity<>(new Response<>().setData(resourceService.pageRet(page)), HttpStatus.OK);
     }
 
     @ApiOperation("获取项目数据资源")
-    @GetMapping("/{projectId}/resources")
+    @GetMapping("/resource/{projectId}/resources")
     public Object getResources(@PathVariable Long projectId) {
         return new ResponseEntity<>(new Response<>().setData(resourceService.getResources(projectId)), HttpStatus.OK);
     }
@@ -44,7 +43,7 @@ public class ResourceController {
      * drop 基础、首页、检索、resource property、rule set
      */
     @ApiOperation("删除资源")
-    @DeleteMapping("/{resourceId}")
+    @DeleteMapping("/resource/{resourceId}")
     public Object delete(@PathVariable Long resourceId) {
         Resource resource = resourceService.getById(resourceId);
         if (resource == null) {
@@ -55,82 +54,119 @@ public class ResourceController {
     }
 
     @ApiOperation("创建资源")
-    @PostMapping("/{projectId}")
+    @PostMapping("/resource/{projectId}")
     public ResponseEntity addResources(@PathVariable Long projectId, @RequestBody ResourceInfoDTO resourceDTO) {
         return resourceService.addResources(projectId, resourceDTO);
     }
 
     @ApiOperation("修改资源")
-    @PutMapping("/{resourceId}")
+    @PutMapping("/resource/{resourceId}")
     public Object updateResource(@PathVariable Long resourceId, @Valid @RequestBody ResourceInfoDTO resourceDTO) {
         resourceService.updateResource(resourceId, resourceDTO);
         return new Response<>();
     }
 
     @ApiOperation("获取资源结构")
-    @GetMapping("/columns/{resourceId}")
+    @GetMapping("/resource/columns/{resourceId}")
     public Object getColumns(@PathVariable Long resourceId, @RequestParam boolean useId) {
         return new ResponseEntity<>(new Response<>().setData(resourceService.getColumns(resourceId, useId)), HttpStatus.OK);
     }
 
-    @ApiOperation("获取高级检索配置")
-    @GetMapping("/{projectId}/getAdvancedSearch/{type}")
-    public ResponseEntity<List<AdvancedSearchConfigDTO>> getAdvancedSearch(@PathVariable Long projectId, @PathVariable Long type) {
-        return new ResponseEntity<>(resourceService.getAdvancedSearch(projectId, type), HttpStatus.OK);
-    }
-
-    @ApiOperation("高级检索")
-    @PostMapping("/advancedSearch")
-    public ResponseEntity<SearchResultDTO> advancedSearch(@Valid @RequestBody AdvancedSearchResourceDTO advancedSearchResource) {
-        return new ResponseEntity<>(resourceService.advancedSearch(advancedSearchResource), HttpStatus.OK);
-    }
-
-    @ApiOperation("高级统计")
-    @PostMapping("/advancedStatistics")
-    public ResponseEntity<List<StatisticsResultDTO>> advancedStatistics(@Valid @RequestBody AdvancedStatisticsDTO advancedStatistics) {
-        return new ResponseEntity<>(resourceService.advancedStatistics(advancedStatistics), HttpStatus.OK);
-    }
-
-    @ApiOperation("获取检索结果显示字段")
-    @GetMapping("/{resourceId}/search/fields")
-    public ResponseEntity<List<SearchFieldDTO>> getSearchFields(@PathVariable Long resourceId) {
-        return new ResponseEntity<>(resourceService.getSearchFields(resourceId), HttpStatus.OK);
-    }
-
-    @ApiOperation("获取结果分析字段")
-    @GetMapping("/{resourceId}/getSearchStatisticsFields")
-    public ResponseEntity<List<SearchStatisticsFieldDTO>> getSearchStatisticsFields(@PathVariable Long resourceId) {
-        return new ResponseEntity<>(resourceService.getSearchStatisticsFields(resourceId), HttpStatus.OK);
-    }
-
-    @ApiOperation("获取检索详情显示字段")
-    @GetMapping("/{resourceId}/detail/fields")
-    public ResponseEntity<List<DetailFieldDTO>> getDetailFields(@PathVariable Long resourceId) {
-        return new ResponseEntity<>(resourceService.getDetailFields(resourceId), HttpStatus.OK);
-    }
-
-    @ApiOperation("获取数据详情")
-    @GetMapping("/{resourceId}/result/{id}")
-    public ResponseEntity<List<JSONObject>> getDetail(@PathVariable Long resourceId, @PathVariable Long id) {
-        return new ResponseEntity<>(resourceService.getDetail(resourceId, id), HttpStatus.OK);
-    }
-
-    @PostMapping("/exportData")
-    @ApiOperation("导出数据")
-    public void exportData(@Valid @RequestBody ExportDataDTO exportDataDTO, HttpServletRequest request, HttpServletResponse response) {
-        resourceService.exportData(exportDataDTO, request, response);
-    }
-
     @ApiOperation("修改资源")
-    @PutMapping
+    @PutMapping("/resource")
     public Object modifyResource(Resource resource) {
         return new ResponseEntity<>(resourceService.updateById(resource), HttpStatus.OK);
     }
 
-    @PostMapping("/importData")
+    @PostMapping("/resource/importData")
     @ApiOperation("导入数据")
     public ResponseEntity importData(@Valid @RequestBody importDataDTO importDataDTO) {
         return resourceService.importData(importDataDTO);
     }
 
+    /*
+     * 原导入模块
+     */
+    @Autowired
+    private ImportPropertyService importPropertyService;
+    @Autowired
+    private ImportTaskService importTaskService;
+    @Autowired
+    private ResourcePropertyService resourcePropertyService;
+    @Autowired
+    private RuleSetService ruleSetService;
+
+    @GetMapping("/import/listResourceProperty/{projectId}/{resourceId}")
+    @ApiOperation("资源属性:获取属性列表")
+    public ResponseEntity<List<ResourcePropertyDTO>> listResourceProperty(@PathVariable Long projectId, @PathVariable Long resourceId) {
+        return resourcePropertyService.listResourceProperty(projectId, resourceId);
+    }
+
+    @PostMapping("/import/saveOrUpdateResourceProperty")
+    @ApiOperation("资源属性:创建/修改")
+    public ResponseEntity saveOrUpdateResourceProperty(@Valid @RequestBody ResourcePropertyDTO resourcePropertyDTO) {
+        return resourcePropertyService.saveOrUpdateResourceProperty(resourcePropertyDTO);
+    }
+
+    @DeleteMapping("/import/deleteResourceProperty/{resourceId}/{id}")
+    @ApiOperation("资源属性:删除")
+    public ResponseEntity deleteProperty(@PathVariable Long resourceId, @PathVariable Long id) {
+        return resourcePropertyService.deleteResourceProperty(resourceId, id);
+    }
+
+    @GetMapping("/import/listRuleSet/{resourceId}")
+    @ApiOperation("规则集:获取资源所有规则集")
+    public ResponseEntity<List<RuleSetDTO>> listRuleSet(@PathVariable Long resourceId) {
+        return ruleSetService.listRuleSet(resourceId);
+    }
+
+    @PostMapping("/import/saveOrUpdateRuleSet")
+    @ApiOperation("规则集:创建/修改")
+    public ResponseEntity<Long> saveOrUpdateRuleSet(@Valid @RequestBody RuleSetDTO ruleSetDTO) {
+        return ruleSetService.saveOrUpdateRuleSet(ruleSetDTO);
+    }
+
+    @DeleteMapping("/import/deleteRuleSet/{id}")
+    @ApiOperation("规则集:删除")
+    public ResponseEntity deleteRuleSet(@PathVariable Long id) {
+        return ruleSetService.deleteRuleSet(id);
+    }
+
+    @GetMapping("/import/listImportProperty/{ruleSetId}")
+    @ApiOperation("导入规则:获取规则集下的所有规则")
+    public ResponseEntity<List<ImportPropertyDTO>> listImportProperty(@PathVariable Long ruleSetId) {
+        return new ResponseEntity<>(importPropertyService.listImportProperty(ruleSetId), HttpStatus.OK);
+    }
+
+    @PostMapping("/import/saveImportProperty")
+    @ApiOperation("导入规则:创建/修改")
+    public ResponseEntity saveImportProperty(@Valid @RequestBody SaveImportPropertyDTO saveImportPropertyDTO) {
+        return importPropertyService.saveImportProperty(saveImportPropertyDTO);
+    }
+
+    @DeleteMapping("/import/deleteImportProperty/{id}")
+    @ApiOperation("导入规则:删除")
+    public ResponseEntity deleteImportProperty(@PathVariable Long id) {
+        importPropertyService.removeById(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/import/listImportTask/{resourceId}")
+    @ApiOperation("导入任务:获取资源导入记录")
+    public ResponseEntity<List<ImportTaskDTO>> listImportTask(@PathVariable Long resourceId) {
+        return importTaskService.listImportTask(resourceId);
+    }
+
+    @DeleteMapping("/import/deleteImportTask/{id}")
+    @ApiOperation("导入任务:删除")
+    public ResponseEntity deleteImportTask(@PathVariable Long id) {
+        importTaskService.removeById(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/import/download")
+    @ApiOperation("导入任务:下载文件")
+    public void downloadFile(@RequestParam("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) {
+        importTaskService.downloadFile(fileName, request, response);
+    }
 }

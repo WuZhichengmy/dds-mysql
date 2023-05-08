@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/search/config")
-@Api(tags = "检索配置")
+@Api(tags = "检索配置模块")
 public class SearchConfigController {
 
     @Autowired

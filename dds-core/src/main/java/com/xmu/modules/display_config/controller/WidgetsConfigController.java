@@ -32,9 +32,9 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/widgets/config")
-@Api(tags = "展示组件配置")
+@Api(tags = "展示组件配置模块")
 @Slf4j
-public class WidgetsController {
+public class WidgetsConfigController {
 
     @Autowired
     private DisplayWidgetsService displayWidgetsService;

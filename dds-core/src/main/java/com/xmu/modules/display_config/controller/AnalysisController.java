@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/analysis")
-@Api(tags = "分析模块")
+@Api(tags = "分析报告模块")
 public class AnalysisController {
 
     @Autowired
