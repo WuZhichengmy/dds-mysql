@@ -31,17 +31,17 @@
 在您采用的数据库上创建空数据库，名称与配置文件保持一致，默认名即data_display。
 
 ### 填充数据库
+1. 将data-display-server\sql\eladmin.sql导入到数据库。
+2. 在data-display-server\dds-db\src\main\resources\application.yml中修改datasource以及liquibase等配置信息，以使系统能够通过liquibase配置文件自动填充数据库。
 
-1. 在data-display-server\dds-db\src\main\resources\application.yml中修改datasource以及liquibase等配置信息，以使系统能够通过liquibase配置文件自动填充数据库。
-
-2. 运行DbServiceApplication模块，等待数据库填充。
-3. 出现并包含不限于如下数据库表，证明数据库填充成功。
+3. 运行DbServiceApplication模块，等待数据库填充。
+4. 出现并包含不限于如下数据库表，证明数据库填充成功。
 
 ​		![image-20230410135647104](https://github.com/SatoriDSufJan/data-display-server/blob/main/static/image-20230410135647104.png)
 
 
 
-4. 数据库填充完成后，启动DataDisplayServerApplication，这是后端系统的总入口，若要对系统进行进一步配置，详见data-display-server\dds-system\src\main\resources\config下的文件。
+5. 数据库填充完成后，启动DataDisplayServerApplication，这是后端系统的总入口，若要对系统进行进一步配置，详见data-display-server\dds-system\src\main\resources\config下的文件。
 
 ### 运行前端
 
@@ -105,5 +105,3 @@
 ## 尾言
 
 此项目仍旧处于开发阶段，部分功能还未完善。
-
-~~目前缺失或者不明确的功能点包括但不限于：分析报告中的多成分图、关系图实现，分析报告导出功能。~~(已基本解决)

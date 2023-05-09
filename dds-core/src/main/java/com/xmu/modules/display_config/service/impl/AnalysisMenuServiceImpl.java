@@ -1,7 +1,5 @@
 package com.xmu.modules.display_config.service.impl;
 
-import cn.hutool.core.lang.Pair;
-import cn.hutool.core.lang.Tuple;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -522,6 +520,7 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
         String xName = lineConfig.getXName();
         String yName = lineConfig.getYName();
         String cName = lineConfig.getLineName();
+        String componentName = lineConfig.getComponentName();
         List<Map<String, Object>> data = Lists.newArrayList();
         List<Object> yData = Lists.newArrayList();
         List<Object> xData = Lists.newArrayList();
@@ -546,7 +545,7 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
         yAxis.put("name", yName);
         yAxis.put("type", "value");
         return new LineRetDTO()
-                .setTitle(cName)
+                .setTitle(componentName)
                 .setXAxis(xAxis)
                 .setYAxis(yAxis)
                 .setSeries(data);
