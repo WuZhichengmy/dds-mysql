@@ -5,7 +5,7 @@ spring:
   freemarker:
     check-template-location: false
   profiles:
-    active: dev
+    active: prod
   jackson:
     time-zone: GMT+8
   data:
@@ -24,7 +24,7 @@ spring:
   redis:
     #数据库索引
     database: ${REDIS_DB:0}
-    host: ${REDIS_HOST:127.0.0.1}
+    host: ${REDIS_HOST:119.91.158.102}
     port: ${REDIS_PORT:6379}
 #    password: ${REDIS_PWD:123456}
     #连接超时时间

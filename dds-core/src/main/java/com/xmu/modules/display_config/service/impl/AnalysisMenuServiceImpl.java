@@ -269,7 +269,51 @@ public class AnalysisMenuServiceImpl extends ServiceImpl<AnalysisMenuMapper, Ana
     }
 
     private Object tagsCloudFormat(List<Map<String, Object>> queryResult, String config) {
-        return null;
+        Map<String, GraphConfig> configMap = JSONObject.parseObject(config, new TypeReference<Map<String, GraphConfig>>() {
+        });
+        Map<String, Long> wordCount = new HashMap<>();
+        queryResult.forEach(m->{
+            String val = (String) m.get("中文主题词");
+            List<String> keyWords = List.of(val.split(";"));
+            keyWords.forEach(word -> {
+                if(wordCount.containsKey(word)) {
+                    Long l = wordCount.get(word);
+                    l++;
+                    wordCount.put(word, l);
+                } else {
+                    wordCount.put(word, 1L);
+                }
+            });
+        });
+        List<Map.Entry<String, Long>> list = new ArrayList<>(wordCount.entrySet());
+
+        // 使用Collections.sort()方法对List进行排序
+        list.sort((o1, o2) -> {
+            // 从大到小排序
+            return o2.getValue().compareTo(o1.getValue());
+        });
+
+        Map<String, Object> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Long> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+//        System.out.println("aaa:"+sortedMap);
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : sortedMap.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            mapList.add(new HashMap<>(){{
+                put("name", key);
+                put("value", value);
+            }});
+        }
+
+        WordCloudRetDTO wordCloudRetDTO = new WordCloudRetDTO();
+        wordCloudRetDTO.setTitle(String.valueOf(configMap.get("componentName")));
+
+        wordCloudRetDTO.setData(mapList);
+        return wordCloudRetDTO;
     }
 
     /**

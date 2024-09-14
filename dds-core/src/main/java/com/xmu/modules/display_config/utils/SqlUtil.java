@@ -7,7 +7,7 @@ package com.xmu.modules.display_config.utils;
 public class SqlUtil {
 
     public static String columns(String table) {
-        return "select column_name from information_schema.COLUMNS where TABLE_NAME= '" + table + "'" + "and TABLE_SCHEMA = 'data_display'";
+        return "select column_name from information_schema.COLUMNS where TABLE_NAME= '" + table + "'" + "and TABLE_SCHEMA = 'data_display_last'";
     }
 
     public static String count(String table) {

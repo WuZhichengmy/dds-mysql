@@ -557,7 +557,9 @@ public class DisplayWidgetsServiceImpl extends ServiceImpl<DisplayWidgetsMapper,
         Resource resource = resourceService.getById(resourceId);
         String target = resource.getTarget();
         String sql = SqlUtil.columns(target);
+//        System.out.println("/**/aaa"+sql);
         List<Map<String, Object>> maps = this.getBaseMapper().listDataBySql(sql);
+//        System.out.println("bbb"+maps);
         //过滤掉id
         if (!useId) {
             maps = maps.stream().filter(map -> !map.get("COLUMN_NAME").equals("id")).collect(Collectors.toList());

@@ -54,7 +54,7 @@ public class OnlineUserService {
         String dept = jwtUserDto.getUser().getDept().getName();
         String ip = StringUtils.getIp(request);
         String browser = StringUtils.getBrowser(request);
-        String address = StringUtils.getCityInfo(ip);
+        String address = "test";
         OnlineUserDto onlineUserDto = null;
         try {
             onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername(), jwtUserDto.getUser().getNickName(), dept, browser , ip, address, EncryptUtils.desEncrypt(token), new Date());
